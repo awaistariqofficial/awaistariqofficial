@@ -130,7 +130,7 @@ def signal(total, weeks, t):
 {"".join(rows)}{"".join(ticks)}
 <line class="scan" x1="0" x2="0" y1="{y0}" y2="{y1}" stroke="{t["sig"]}" stroke-width="1.5">
 <animateTransform attributeName="transform" type="translate" from="{L} 0" to="{R} 0" dur="9s" repeatCount="indefinite"/></line>
-<text x="0" y="{H - 12}" class="c">Last active {last}. If these lines ever go flat, consider me dead.</text>
+<text x="0" y="{H - 12}" class="c">Last active {last}. It is a capital mistake to theorise before one has data. Insensibly, one begins to twist facts to suit theories, instead of theories to suit facts. </text>
 </svg>'''
 
 
