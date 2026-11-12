@@ -118,7 +118,7 @@ def signal(total, weeks, t):
             seen.add(dt[:7])
             ticks.append(f'<text x="{xs(i):.0f}" y="{TOP + 30 + 6 * GAP + 36}" class="m">{"Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()[int(dt[5:7]) - 1]}</text>')
     y0, y1 = TOP + 2, TOP + 30 + 6 * GAP + 12
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="{total} GitHub contributions in the past year, drawn as seven waves, one per weekday. Last active {last}. If these lines ever go flat, consider me dead.">
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="{total} GitHub contributions in the past year, drawn as seven waves, one per weekday. Last active {last}. It is a capital mistake to theorise before one has data. Insensibly, one begins to twist facts to suit theories, instead of theories to suit facts.">
 <style>{FONTS}
 .h{{font:24px text,{SANS};fill:{t["ink"]}}}
 .m{{font:15px text,{SANS};fill:{t["mute"]}}}
