@@ -132,7 +132,7 @@ def signal(total, weeks, t):
 @media (prefers-reduced-motion:reduce){{.scan{{display:none}}}}
 </style>
 <rect width="{W}" height="{H}" fill="{t["bg"]}"/>
-<text x="0" y="34" class="h">{total:,} contributions in the past year, one line per weekday.</text>
+<text x="0" y="34" class="h">{total:,} contributions in the past year.</text>
 {"".join(rows)}{"".join(ticks)}
 <line class="scan" x1="0" x2="0" y1="{y0}" y2="{y1}" stroke="{t["sig"]}" stroke-width="1.5">
 <animateTransform attributeName="transform" type="translate" from="{L} 0" to="{R} 0" dur="9s" repeatCount="indefinite"/></line>
