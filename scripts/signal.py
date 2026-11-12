@@ -7,11 +7,12 @@ Usage: GITHUB_TOKEN=... python scripts/signal.py <login>   (add --demo to previe
          -> assets/{hero,signal}-{dark,light}.svg
 Fonts (Bricolage Grotesque, OFL) are embedded so GitHub renders them exactly.
 """
-import base64, json, math, os, sys, urllib.request
+import base64, html, json, math, os, sys, textwrap, urllib.request
 
 ARGS = [a for a in sys.argv[1:] if not a.startswith("--")]
 DEMO = "--demo" in sys.argv
 LOGIN = ARGS[0] if ARGS else "awaistariqofficial"
+QUOTE = "\"It is a capital mistake to theorise before one has data. Insensibly, one begins to twist facts to suit theories, instead of theories to suit facts.\" Sherlock Holmes"
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 THEMES = {  # matched to GitHub's own canvas so the images have no visible box
@@ -103,6 +104,9 @@ def signal(total, weeks, t):
     ld = max((d["date"] for d in days if d["contributionCount"]), default=None)
     last = "never" if not ld else "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()[int(ld[5:7]) - 1] + " " + str(int(ld[8:]))
     peak = max(d["contributionCount"] for d in days) or 1
+    foot = textwrap.wrap(f"Last active {last}. {QUOTE}", 105)
+    H += 28 * (len(foot) - 1)
+    foot_svg = "".join(f'<text x="0" y="{H - 12 - 28 * (len(foot) - 1 - i)}" class="c">{html.escape(ln, quote=False)}</text>' for i, ln in enumerate(foot))
     xs = lambda i: L + (R - L) * i / (len(weeks) - 1)
     rows = []
     for wd, name in enumerate(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]):
@@ -116,9 +120,11 @@ def signal(total, weeks, t):
         dt = w["contributionDays"][0]["date"]
         if dt[:7] not in seen and dt[8:] <= "07":
             seen.add(dt[:7])
-            ticks.append(f'<text x="{xs(i):.0f}" y="{TOP + 30 + 6 * GAP + 36}" class="m">{"Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()[int(dt[5:7]) - 1]}</text>')
+            end = ' text-anchor="end"' if xs(i) > R - 30 else ""
+            month = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()[int(dt[5:7]) - 1]
+            ticks.append(f'<text x="{xs(i):.0f}" y="{TOP + 30 + 6 * GAP + 36}" class="m"{end}>{month}</text>')
     y0, y1 = TOP + 2, TOP + 30 + 6 * GAP + 12
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="{total} GitHub contributions in the past year, drawn as seven waves, one per weekday. Last active {last}. It is a capital mistake to theorise before one has data. Insensibly, one begins to twist facts to suit theories, instead of theories to suit facts.">
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="{total} GitHub contributions in the past year, drawn as seven waves, one per weekday. Last active {last}. {html.escape(QUOTE)}">
 <style>{FONTS}
 .h{{font:24px text,{SANS};fill:{t["ink"]}}}
 .m{{font:15px text,{SANS};fill:{t["mute"]}}}
@@ -130,7 +136,7 @@ def signal(total, weeks, t):
 {"".join(rows)}{"".join(ticks)}
 <line class="scan" x1="0" x2="0" y1="{y0}" y2="{y1}" stroke="{t["sig"]}" stroke-width="1.5">
 <animateTransform attributeName="transform" type="translate" from="{L} 0" to="{R} 0" dur="9s" repeatCount="indefinite"/></line>
-<text x="0" y="{H - 12}" class="c">Last active {last}. It is a capital mistake to theorise before one has data. Insensibly, one begins to twist facts to suit theories, instead of theories to suit facts. </text>
+{foot_svg}
 </svg>'''
 
 
